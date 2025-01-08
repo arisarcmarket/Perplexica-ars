@@ -63,33 +63,11 @@ const Attach = ({
   ) : files.length > 0 ? (
     <Popover className="relative w-full max-w-[15rem] md:max-w-md lg:max-w-lg">
       <PopoverButton
-        type="button"
         className={cn(
-          'flex flex-row items-center justify-between space-x-1 p-2 text-black/50 dark:text-white/50 rounded-xl hover:bg-light-secondary dark:hover:bg-dark-secondary active:scale-95 transition duration-200 hover:text-black dark:hover:text-white',
-          files.length > 0 ? '-ml-2 lg:-ml-3' : '',
+          'flex items-center justify-center rounded-lg p-2 hover:bg-light-100 dark:hover:bg-dark-200 transition-colors',
         )}
       >
-        {files.length > 1 && (
-          <>
-            <File size={19} className="text-sky-400" />
-            <p className="text-sky-400 inline whitespace-nowrap text-xs font-medium">
-              {files.length} files
-            </p>
-          </>
-        )}
-
-        {files.length === 1 && (
-          <>
-            <File size={18} className="text-sky-400" />
-            <p className="text-sky-400 text-xs font-medium">
-              {files[0].fileName.length > 10
-                ? files[0].fileName.replace(/\.\w+$/, '').substring(0, 3) +
-                  '...' +
-                  files[0].fileExtension
-                : files[0].fileName}
-            </p>
-          </>
-        )}
+        <CopyPlus size={20} />
       </PopoverButton>
       <Transition
         as={Fragment}

@@ -5,6 +5,7 @@ import {
   Pencil,
   ScanEye,
   SwatchBook,
+  LucideProps
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -18,52 +19,40 @@ import { Fragment } from 'react';
 
 const focusModes = [
   {
+    key: 'writingAssistant',
+    title: 'Writing',
+    description: 'Chat without searching the web',
+    icon: <Pencil size={16} className="shrink-0" />,
+  },
+  {
     key: 'webSearch',
     title: 'All',
     description: 'Searches across all of the internet',
-    icon: <Globe size={20} />,
+    icon: <Globe size={20} className="shrink-0" />,
   },
   {
     key: 'academicSearch',
     title: 'Academic',
     description: 'Search in published academic papers',
-    icon: <SwatchBook size={20} />,
-  },
-  {
-    key: 'writingAssistant',
-    title: 'Writing',
-    description: 'Chat without searching the web',
-    icon: <Pencil size={16} />,
+    icon: <SwatchBook size={20} className="shrink-0" />,
   },
   {
     key: 'wolframAlphaSearch',
     title: 'Wolfram Alpha',
     description: 'Computational knowledge engine',
-    icon: <BadgePercent size={20} />,
+    icon: <BadgePercent size={20} className="shrink-0" />,
   },
   {
     key: 'youtubeSearch',
     title: 'Youtube',
     description: 'Search and watch videos',
-    icon: (
-      <SiYoutube
-        className="h-5 w-auto mr-0.5"
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
-      />
-    ),
+    icon: <SiYoutube size={20} className="h-5 w-auto shrink-0" />,
   },
   {
     key: 'redditSearch',
     title: 'Reddit',
     description: 'Search for discussions and opinions',
-    icon: (
-      <SiReddit
-        className="h-5 w-auto mr-0.5"
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
-      />
-    ),
+    icon: <SiReddit size={20} className="h-5 w-auto shrink-0" />,
   },
 ];
 
@@ -83,15 +72,15 @@ const Focus = ({
         {focusMode !== 'webSearch' ? (
           <div className="flex flex-row items-center space-x-1">
             {focusModes.find((mode) => mode.key === focusMode)?.icon}
-            <p className="text-xs font-medium hidden lg:block">
+            {/* <p className="text-xs font-medium hidden lg:block">
               {focusModes.find((mode) => mode.key === focusMode)?.title}
-            </p>
+            </p> */}
             <ChevronDown size={20} className="-translate-x-1" />
           </div>
         ) : (
           <div className="flex flex-row items-center space-x-1">
-            <ScanEye size={20} />
-            <p className="text-xs font-medium hidden lg:block">Focus</p>
+            <Globe size={20} className="shrink-0" />
+            {/* <p className="text-xs font-medium hidden lg:block">Web search</p> */}
           </div>
         )}
       </PopoverButton>

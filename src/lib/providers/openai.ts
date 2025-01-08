@@ -9,6 +9,18 @@ export const loadOpenAIChatModels = async () => {
 
   try {
     const chatModels = {
+      // 'reactor': {
+      //   displayName: 'reactor',
+      //   model: new ChatOpenAI({
+      //     openAIApiKey:'dWVt8s9bc6g6Zq6GHkkKDnB3Dlv5MiUQTe_CV2vwCDI',
+      //     modelName: '/home/dev1/_models/reactor-mk1',
+      //     temperature: 0.7,
+      //     configuration:{
+      //       baseURL:'https://llm.arcreactor.ai',
+      //       dangerouslyAllowBrowser:true
+      //     }
+      //   }),
+      // },
       'gpt-3.5-turbo': {
         displayName: 'GPT-3.5 Turbo',
         model: new ChatOpenAI({
@@ -17,38 +29,38 @@ export const loadOpenAIChatModels = async () => {
           temperature: 0.7,
         }),
       },
-      'gpt-4': {
-        displayName: 'GPT-4',
-        model: new ChatOpenAI({
-          openAIApiKey,
-          modelName: 'gpt-4',
-          temperature: 0.7,
-        }),
-      },
-      'gpt-4-turbo': {
-        displayName: 'GPT-4 turbo',
-        model: new ChatOpenAI({
-          openAIApiKey,
-          modelName: 'gpt-4-turbo',
-          temperature: 0.7,
-        }),
-      },
-      'gpt-4o': {
-        displayName: 'GPT-4 omni',
-        model: new ChatOpenAI({
-          openAIApiKey,
-          modelName: 'gpt-4o',
-          temperature: 0.7,
-        }),
-      },
-      'gpt-4o-mini': {
-        displayName: 'GPT-4 omni mini',
-        model: new ChatOpenAI({
-          openAIApiKey,
-          modelName: 'gpt-4o-mini',
-          temperature: 0.7,
-        }),
-      },
+      // 'gpt-4': {
+      //   displayName: 'GPT-4',
+      //   model: new ChatOpenAI({
+      //     openAIApiKey,
+      //     modelName: 'gpt-4',
+      //     temperature: 0.7,
+      //   }),
+      // },
+      // 'gpt-4-turbo': {
+      //   displayName: 'GPT-4 turbo',
+      //   model: new ChatOpenAI({
+      //     openAIApiKey,
+      //     modelName: 'gpt-4-turbo',
+      //     temperature: 0.7,
+      //   }),
+      // },
+      // 'gpt-4o': {
+      //   displayName: 'GPT-4 omni',
+      //   model: new ChatOpenAI({
+      //     openAIApiKey,
+      //     modelName: 'gpt-4o',
+      //     temperature: 0.7,
+      //   }),
+      // },
+      // 'gpt-4o-mini': {
+      //   displayName: 'GPT-4 omni mini',
+      //   model: new ChatOpenAI({
+      //     openAIApiKey,
+      //     modelName: 'gpt-4o-mini',
+      //     temperature: 0.7,
+      //   }),
+      // },
     };
 
     return chatModels;

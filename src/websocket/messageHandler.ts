@@ -190,6 +190,8 @@ export const handleMessage = async (
 
       if (handler) {
         try {
+          console.log('History',history);
+          console.log('parse', parsedMessage)
           const emitter = await handler.searchAndAnswer(
             parsedMessage.content,
             history,

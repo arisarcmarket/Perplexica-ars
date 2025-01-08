@@ -102,7 +102,7 @@ const MessageBox = ({
                   size={20}
                 />
                 <h3 className="text-black dark:text-white font-medium text-xl">
-                  Answer
+                  Reactor Answer
                 </h3>
               </div>
               <Markdown

@@ -474,6 +474,10 @@ class MetaSearchAgent implements MetaSearchAgentType {
       embeddings,
       optimizationMode,
     );
+    
+
+    console.log('ansewring', answeringChain)
+    
 
     const stream = answeringChain.streamEvents(
       {
@@ -485,6 +489,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
       },
     );
 
+    console.log(stream)
     this.handleStream(stream, emitter);
 
     return emitter;

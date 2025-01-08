@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -73,38 +75,38 @@ const EmptyChatMessageInput = ({
       }}
       className="w-full"
     >
-      <div className="flex flex-col bg-light-secondary dark:bg-dark-secondary px-5 pt-5 pb-2 rounded-lg w-full border border-light-200 dark:border-dark-200">
-        <TextareaAutosize
-          ref={inputRef}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          minRows={2}
-          className="bg-transparent placeholder:text-black/50 dark:placeholder:text-white/50 text-sm text-black dark:text-white resize-none focus:outline-none w-full max-h-24 lg:max-h-36 xl:max-h-48"
-          placeholder="Ask anything..."
-        />
-        <div className="flex flex-row items-center justify-between mt-4">
-          <div className="flex flex-row items-center space-x-2 lg:space-x-4">
-            <Focus focusMode={focusMode} setFocusMode={setFocusMode} />
-            <Attach
-              fileIds={fileIds}
-              setFileIds={setFileIds}
-              files={files}
-              setFiles={setFiles}
-              showText
-            />
-          </div>
-          <div className="flex flex-row items-center space-x-1 sm:space-x-4">
-            <Optimization
-              optimizationMode={optimizationMode}
-              setOptimizationMode={setOptimizationMode}
+      <div className="relative flex flex-col w-full">
+        <div className="flex flex-col bg-light-secondary dark:bg-dark-secondary px-5 pt-5 pb-2 rounded-lg w-full border border-light-200 dark:border-dark-200">
+          <div className="relative">
+            <TextareaAutosize
+              ref={inputRef}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="bg-transparent placeholder:text-black/50 dark:placeholder:text-white/50 text-sm text-black dark:text-white resize-none focus:outline-none w-full max-h-24 lg:max-h-36 xl:max-h-48 pr-12 pl-20"
+              placeholder="Message ..."
             />
             <button
               disabled={message.trim().length === 0}
-              className="bg-[#24A0ED] text-white disabled:text-black/50 dark:disabled:text-white/50 disabled:bg-[#e0e0dc] dark:disabled:bg-[#ececec21] hover:bg-opacity-85 transition duration-100 rounded-full p-2"
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#24A0ED] text-white disabled:text-black/50 dark:disabled:text-white/50 disabled:bg-[#e0e0dc] dark:disabled:bg-[#ececec21] hover:bg-opacity-85 transition duration-100 rounded-full p-2"
             >
               <ArrowRight className="bg-background" size={17} />
             </button>
+            <div className="absolute left-2 top-1/2 -translate-y-1/2 flex items-center space-x-2">
+              <Focus focusMode={focusMode} setFocusMode={setFocusMode} />
+              <Attach
+                files={files}
+                setFiles={setFiles}
+                fileIds={fileIds}
+                setFileIds={setFileIds}
+              />
+            </div>
           </div>
+        </div>
+        <div className="absolute -right-14 -bottom-12">
+          <Optimization
+            optimizationMode={optimizationMode}
+            setOptimizationMode={setOptimizationMode}
+          />
         </div>
       </div>
     </form>

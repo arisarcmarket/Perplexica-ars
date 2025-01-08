@@ -34,5 +34,6 @@ process.on('uncaughtException', (err, origin) => {
 });
 
 process.on('unhandledRejection', (reason, promise) => {
+  console.log('Reason ', reason)
   logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
 });

@@ -406,7 +406,7 @@ const ChatWindow = ({ id }: { id?: string }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [fileIds, setFileIds] = useState<string[]>([]);
 
-  const [focusMode, setFocusMode] = useState('webSearch');
+  const [focusMode, setFocusMode] = useState('writingAssistant');
   const [optimizationMode, setOptimizationMode] = useState('speed');
 
   const [isMessagesLoaded, setIsMessagesLoaded] = useState(false);
@@ -635,35 +635,37 @@ const ChatWindow = ({ id }: { id?: string }) => {
     notFound ? (
       <NextError statusCode={404} />
     ) : (
-      <div>
-        {messages.length > 0 ? (
-          <>
-            <Navbar chatId={chatId!} messages={messages} />
-            <Chat
-              loading={loading}
-              messages={messages}
+      <div className="pt-14">
+        <div className="pt-14">
+          {messages.length > 0 ? (
+            <>
+              <Navbar chatId={chatId!} messages={messages} />
+              <Chat
+                loading={loading}
+                messages={messages}
+                sendMessage={sendMessage}
+                messageAppeared={messageAppeared}
+                rewrite={rewrite}
+                fileIds={fileIds}
+                setFileIds={setFileIds}
+                files={files}
+                setFiles={setFiles}
+              />
+            </>
+          ) : (
+            <EmptyChat
               sendMessage={sendMessage}
-              messageAppeared={messageAppeared}
-              rewrite={rewrite}
+              focusMode={focusMode}
+              setFocusMode={setFocusMode}
+              optimizationMode={optimizationMode}
+              setOptimizationMode={setOptimizationMode}
               fileIds={fileIds}
               setFileIds={setFileIds}
               files={files}
               setFiles={setFiles}
             />
-          </>
-        ) : (
-          <EmptyChat
-            sendMessage={sendMessage}
-            focusMode={focusMode}
-            setFocusMode={setFocusMode}
-            optimizationMode={optimizationMode}
-            setOptimizationMode={setOptimizationMode}
-            fileIds={fileIds}
-            setFileIds={setFileIds}
-            files={files}
-            setFiles={setFiles}
-          />
-        )}
+          )}
+        </div>
       </div>
     )
   ) : (

@@ -1,106 +1,171 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { BookOpenText, Home, Search, SquarePen, Settings } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Compass, FolderOpen, MessageSquare, Search, ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
-import React, { useState, type ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from './Layout';
-import SettingsDialog from './SettingsDialog';
+import Image from 'next/image';
+import { useSidebar } from '@/context/SidebarContext';
+import { formatTimeDifference } from '@/lib/utils';
 
-const VerticalIconContainer = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="flex flex-col items-center gap-y-3 w-full">{children}</div>
-  );
-};
+interface Chat {
+  id: string;
+  title: string;
+  createdAt: string;
+  focusMode: string;
+}
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const segments = useSelectedLayoutSegments();
+  const { isCollapsed, setIsCollapsed } = useSidebar();
+  const [chats, setChats] = useState<Chat[]>([]);
 
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  useEffect(() => {
+    const fetchChats = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chats`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await res.json();
+      setChats(data.chats);
+    };
+
+    fetchChats();
+  }, []);
 
   const navLinks = [
     {
-      icon: Home,
+      icon: MessageSquare,
       href: '/',
-      active: segments.length === 0 || segments.includes('c'),
-      label: 'Home',
+      active: segments.includes('chats'),
+      label: 'Chats',
+      subItems: chats.map(chat => ({
+        label: chat.title,
+        href: `/c/${chat.id}`
+      }))
     },
     {
       icon: Search,
       href: '/discover',
       active: segments.includes('discover'),
       label: 'Discover',
+      subItems: []
     },
     {
-      icon: BookOpenText,
-      href: '/library',
-      active: segments.includes('library'),
-      label: 'Library',
+      icon: ImageIcon,
+      href: '/images',
+      active: segments.includes('image'),
+      label: 'Image',
+      subItems: []
     },
+    
   ];
 
   return (
-    <div>
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-20 lg:flex-col">
-        <div className="flex grow flex-col items-center justify-between gap-y-5 overflow-y-auto bg-light-secondary dark:bg-dark-secondary px-2 py-8">
-          <a href="/">
-            <SquarePen className="cursor-pointer" />
-          </a>
-          <VerticalIconContainer>
+    <div className="flex h-full">
+      <div 
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 border-r border-light-100 dark:border-dark-200 bg-light-secondary dark:bg-dark-secondary",
+          isCollapsed ? "w-[60px]" : "w-[240px]"
+        )}
+      >
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto px-3 py-4">
+          {/* Logo and collapse button */}
+          <div className="flex items-center justify-between">
+            <div className={cn("flex items-center gap-2", isCollapsed && "justify-center w-full")}>
+              <Image 
+                src="https://storage.googleapis.com/reactor_users/reactor_assets/reactor2.svg"
+                alt="Logo" 
+                width={24} 
+                height={24}
+              />
+              {!isCollapsed && <span className="font-semibold">Reactor</span>}
+            </div>
+            <button 
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className={cn(
+                "p-1 hover:bg-light-100 dark:hover:bg-dark-100 rounded-lg transition-colors",
+                isCollapsed && "hidden"
+              )}
+            >
+              <ChevronLeft size={16} />
+            </button>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex flex-col gap-y-4">
             {navLinks.map((link, i) => (
-              <Link
-                key={i}
-                href={link.href}
-                className={cn(
-                  'relative flex flex-row items-center justify-center cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 duration-150 transition w-full py-2 rounded-lg',
-                  link.active
-                    ? 'text-black dark:text-white'
-                    : 'text-black/70 dark:text-white/70',
+              <div key={link.href}>
+                <Link
+                  href={link.href}
+                  className={cn(
+                    'flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-light-100 dark:hover:bg-dark-100',
+                    link.active && 'bg-light-100 dark:bg-light-100'
+                  )}
+                >
+                  <link.icon size={20} />
+                  {!isCollapsed && <span>{link.label}</span>}
+                </Link>
+                {!isCollapsed && link.subItems.length > 0 && (
+                  <div className="ml-8 mt-2 flex flex-col gap-y-2">
+                    {link.subItems.map((subItem) => (
+                      <Link
+                        key={subItem.href}
+                        href={subItem.href}
+                        className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                      >
+                        {subItem.label}
+                      </Link>
+                    ))}
+                  </div>
                 )}
-              >
-                <link.icon />
-                {link.active && (
-                  <div className="absolute right-0 -mr-2 h-full w-1 rounded-l-lg bg-black dark:bg-white" />
-                )}
-              </Link>
+              </div>
             ))}
-          </VerticalIconContainer>
+          </nav>
 
-          <Settings
-            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-            className="cursor-pointer"
-          />
-
-          <SettingsDialog
-            isOpen={isSettingsOpen}
-            setIsOpen={setIsSettingsOpen}
-          />
+          {/* Today Section */}
+          {!isCollapsed && (
+            <div className="mt-4">
+              <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400">Today</h3>
+              <div className="mt-2 flex flex-col gap-y-2">
+                <div className="flex items-center gap-x-3 px-3 py-1">
+                  <div className="h-2 w-2 rounded-full bg-blue-500" />
+                  <span className="text-sm">Strength Training</span>
+                </div>
+                <div className="flex items-center gap-x-3 px-3 py-1">
+                  <div className="h-2 w-2 rounded-full bg-green-500" />
+                  <span className="text-sm">Who am I</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="fixed bottom-0 w-full z-50 flex flex-row items-center gap-x-6 bg-light-primary dark:bg-dark-primary px-4 py-4 shadow-sm lg:hidden">
-        {navLinks.map((link, i) => (
-          <Link
-            href={link.href}
-            key={i}
-            className={cn(
-              'relative flex flex-col items-center space-y-1 text-center w-full',
-              link.active
-                ? 'text-black dark:text-white'
-                : 'text-black dark:text-white/70',
-            )}
-          >
-            {link.active && (
-              <div className="absolute top-0 -mt-4 h-1 w-full rounded-b-lg bg-black dark:bg-white" />
-            )}
-            <link.icon />
-            <p className="text-xs">{link.label}</p>
-          </Link>
-        ))}
-      </div>
+      {/* Uncollapse button - only shows when sidebar is collapsed */}
+      {isCollapsed && (
+        <button 
+          onClick={() => setIsCollapsed(false)}
+          className="fixed top-4 left-[60px] z-50 p-1 bg-light-secondary dark:bg-dark-secondary hover:bg-light-100 dark:hover:bg-dark-100 rounded-lg transition-colors shadow-md"
+        >
+          <ChevronRight size={16} />
+        </button>
+      )}
 
-      <Layout>{children}</Layout>
+      {/* Main content */}
+      <div
+        className={cn(
+          "flex-1 min-h-screen",
+          isCollapsed ? "pl-[60px]" : "pl-[240px]"
+        )}
+      >
+        <Layout>{children}</Layout>
+      </div>
     </div>
   );
 };
