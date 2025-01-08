@@ -165,6 +165,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         )}
       >
         <Layout>{children}</Layout>
+        
       </div>
     </div>
   );
