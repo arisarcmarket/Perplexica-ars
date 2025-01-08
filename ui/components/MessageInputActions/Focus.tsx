@@ -22,37 +22,44 @@ const focusModes = [
     key: 'writingAssistant',
     title: 'Writing',
     description: 'Chat without searching the web',
-    icon: <Pencil size={16} className="shrink-0" />,
+    icon: <Pencil className="shrink-0" size={16} />,
   },
   {
     key: 'webSearch',
     title: 'All',
     description: 'Searches across all of the internet',
-    icon: <Globe size={20} className="shrink-0" />,
+    icon: <Globe className="shrink-0" size={20} />,
   },
   {
     key: 'academicSearch',
     title: 'Academic',
     description: 'Search in published academic papers',
-    icon: <SwatchBook size={20} className="shrink-0" />,
+    icon: <SwatchBook className="shrink-0" size={20} />,
   },
-  {
-    key: 'wolframAlphaSearch',
-    title: 'Wolfram Alpha',
-    description: 'Computational knowledge engine',
-    icon: <BadgePercent size={20} className="shrink-0" />,
-  },
+   
   {
     key: 'youtubeSearch',
     title: 'Youtube',
     description: 'Search and watch videos',
-    icon: <SiYoutube size={20} className="h-5 w-auto shrink-0" />,
+    icon: (
+      <SiYoutube
+        className="h-5 w-auto mr-0.5"
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      />
+    ),
   },
   {
     key: 'redditSearch',
     title: 'Reddit',
     description: 'Search for discussions and opinions',
-    icon: <SiReddit size={20} className="h-5 w-auto shrink-0" />,
+    icon: (
+      <SiReddit
+        className="h-5 w-auto mr-0.5"
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      />
+    ),
   },
 ];
 
@@ -79,7 +86,7 @@ const Focus = ({
           </div>
         ) : (
           <div className="flex flex-row items-center space-x-1">
-            <Globe size={20} className="shrink-0" />
+            <Globe className="shrink-0" size={20} />
             {/* <p className="text-xs font-medium hidden lg:block">Web search</p> */}
           </div>
         )}
